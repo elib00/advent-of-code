@@ -46,7 +46,6 @@ namespace solution
             int rows = lines.Length;
 
             int[][] matrix = new int[rows][];
-
             for (int i = 0; i < rows; i++)
             {
                 string[] parts = lines[i].Split(" ");
