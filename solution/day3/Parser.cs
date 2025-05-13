@@ -4,10 +4,12 @@ namespace solution.day3
     {
         private List<Token> Tokens { get; set; }
         private int Current { get; set; }
+        private bool perform;
 
         public Parser(List<Token> tokens)
         {
             Tokens = tokens;
+            perform = true;
         }
 
         private List<int> Parse()
@@ -74,7 +76,19 @@ namespace solution.day3
                         }
 
                         //meaning we now have a match
-                        products.Add(int.Parse(firstNum.Value) * int.Parse(secondNum.Value));
+                        if (perform)
+                        {
+                            products.Add(int.Parse(firstNum.Value) * int.Parse(secondNum.Value));
+                        }
+
+                        break;
+                    case TokenType.DO:
+                        perform = true;
+                        Advance();
+                        break;
+                    case TokenType.DO_NOT:
+                        perform = false;
+                        Advance();
                         break;
                     default:
                         Advance();

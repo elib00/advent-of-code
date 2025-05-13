@@ -9,7 +9,7 @@ namespace solution
             // Day2 day2 = new Day2();
             // int ans = day2.Solve();
             // Console.WriteLine(ans);
-            Scanner scanner = new Scanner("./inputs/day3.txt");
+            Scanner scanner = new Scanner("./inputs/day3-pt2.txt");
             List<Token> tokens = scanner.ProcessFile();
             Parser parser = new Parser(tokens);
             int ans = parser.Solve();

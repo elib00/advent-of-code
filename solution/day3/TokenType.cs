@@ -8,6 +8,6 @@ namespace solution.day3
 
     public enum TokenType
     {
-        MULTIPLY, OPENING_PAREN, CLOSING_PAREN, NUMBER, COMMA, INVALID
+        MULTIPLY, OPENING_PAREN, CLOSING_PAREN, NUMBER, COMMA, INVALID, DO, DO_NOT
     }
 }

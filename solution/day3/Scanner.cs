@@ -29,7 +29,8 @@ namespace solution.day3
             HashSet<char> validChars = new HashSet<char>
             {
                 '(', ')', ',',
-                'm' //to start the mul
+                'm', //to start the mul
+                'd' //to start the do() and don't()
             };
 
             HashSet<char> numbers = new HashSet<char>
@@ -65,14 +66,53 @@ namespace solution.day3
                     }
                     else if (currentChar == 'm')
                     {
-                        //look ahead for two steps
-                        char next = Source[current + 1];
-                        char nextNext = Source[current + 2];
+                        // //look ahead for two steps
+                        // char next = Source[current + 1];
+                        // char nextNext = Source[current + 2];
 
-                        if (next == 'u' && nextNext == 'l')
+                        // if (next == 'u' && nextNext == 'l')
+                        // {
+                        //     tokens.Add(new Token(TokenType.MULTIPLY, "mul"));
+                        //     current += 2;
+                        // }
+                        string potentialValid = "";
+                        int tempCurrent = current;
+                        while (Source[tempCurrent] != 'l')
+                        {
+                            potentialValid += Source[tempCurrent++];
+                        }
+
+                        potentialValid += Source[tempCurrent];
+
+                        if (potentialValid == "mul")
                         {
                             tokens.Add(new Token(TokenType.MULTIPLY, "mul"));
-                            current += 2;
+                            current = tempCurrent;
+                        }
+                    }
+                    else if (currentChar == 'd')
+                    {
+                        string potentialValid = "";
+                        int tempCurrent = current;
+
+                        while (Source[tempCurrent] != ')')
+                        {
+                            potentialValid += Source[tempCurrent++];
+                        }
+
+                        //meaning pag end equal na siya to ')' closing paren
+                        potentialValid += Source[tempCurrent]; //dapat equal to sha do or dont
+
+                        if (potentialValid == "do()")
+                        {
+                            tokens.Add(new Token(TokenType.DO, potentialValid));
+                            current = tempCurrent;
+                        }
+
+                        if (potentialValid == "don't()")
+                        {
+                            tokens.Add(new Token(TokenType.DO_NOT, potentialValid));
+                            current = tempCurrent;
                         }
                     }
                     else //meaning number nani diri
