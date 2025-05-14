@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace solution.day3
 {
     public class Scanner
