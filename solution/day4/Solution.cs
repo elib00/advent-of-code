@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace solution.day4
 {
     public class Solution
@@ -33,6 +31,13 @@ namespace solution.day4
         public int Solve()
         {
             char[][] matrix = CreateCharacterMatrix();
+
+            bool[][] visited = new bool[matrix.Length][];
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                visited[i] = new bool[matrix[i].Length];
+            }
+
             int n = matrix.Length;
             int m = matrix[0].Length;
             int ans = 0;
@@ -45,43 +50,155 @@ namespace solution.day4
                     //meaning kakita tag sugod nga letter
                     if (matrix[i][j] == 'X')
                     {
-                        if (DFS(matrix, word, 0, i, j))
-                        {
-                            ans++;
-                        }
+                        // if (DFS(matrix, word, 0, i, j))
+                        // {
+                        //     ans++;
+                        // }
+                        ans += Traverse(matrix, word, i, j);
                     }
-
                 }
+
             }
 
             return ans;
         }
 
-        private bool DFS(char[][] matrix, string word, int index, int i, int j)
+
+        private int Traverse(char[][] matrix, string word, int i, int j)
         {
-            if (i < 0 || i >= matrix.Length) return false;
-            if (j < 0 || j >= matrix[0].Length) return false;
-            if (matrix[i][j] != word[index]) return false;
+            int count = 0;
+            string currWord = "";
+            int ctr;
+            int timesRepeat;
+            //traverse left
 
-            if (index == word.Length - 1) return true;
+            ctr = j;
+            timesRepeat = 4;
 
-            char temp = matrix[i][j];
-            matrix[i][j] = '#';
+            while (ctr >= 0 && timesRepeat != 0)
+            {
+                currWord += matrix[i][ctr--];
+                timesRepeat--;
+            }
 
-            bool up = DFS(matrix, word, index + 1, i - 1, j);
-            bool down = DFS(matrix, word, index + 1, i + 1, j);
-            bool left = DFS(matrix, word, index + 1, i, j - 1);
-            bool right = DFS(matrix, word, index + 1, i, j + 1);
-            bool upLeft = DFS(matrix, word, index + 1, i - 1, j - 1);
-            bool upRight = DFS(matrix, word, index + 1, i - 1, j + 1);
-            bool downLeft = DFS(matrix, word, index + 1, i + 1, j - 1);
-            bool downRight = DFS(matrix, word, index + 1, i + 1, j + 1);
+            if (currWord == word || currWord == new string(word.Reverse().ToArray()))
+            {
+                count++;
+            }
 
-            matrix[i][j] = temp;
+            //right
+            currWord = "";
+            ctr = j;
+            timesRepeat = 4;
 
-            return up || down || left || right || upLeft || upRight || downLeft || downRight;
+            while (ctr < matrix[i].Length && timesRepeat != 0)
+            {
+                currWord += matrix[i][ctr++];
+                timesRepeat--;
+            }
+
+            if (currWord == word || currWord == new string(word.Reverse().ToArray()))
+            {
+                count++;
+            }
+
+            //up
+            currWord = "";
+            ctr = i;
+            timesRepeat = 4;
+
+            while (ctr >= 0 && timesRepeat != 0)
+            {
+                currWord += matrix[ctr--][j];
+                timesRepeat--;
+            }
+
+            if (currWord == word || currWord == new string(word.Reverse().ToArray()))
+            {
+                count++;
+            }
+
+            //down
+            currWord = "";
+            ctr = i;
+            timesRepeat = 4;
+
+            while (ctr < matrix.Length && timesRepeat != 0)
+            {
+                currWord += matrix[ctr++][j];
+                timesRepeat--;
+            }
+
+            if (currWord == word || currWord == new string(word.Reverse().ToArray()))
+            {
+                count++;
+            }
+
+            //top left
+            int ctr2;
+
+            currWord = "";
+            ctr = i;
+            ctr2 = j;
+            timesRepeat = 4;
+
+            while (ctr >= 0 && ctr2 >= 0 && timesRepeat != 0)
+            {
+                currWord += matrix[ctr--][ctr2--];
+                timesRepeat--;
+            }
+
+            if (currWord == word || currWord == new string(word.Reverse().ToArray()))
+            {
+                count++;
+            }
+
+            //top right
+            currWord = "";
+            ctr = i;
+            ctr2 = j;
+            timesRepeat = 4;
+
+            while (ctr >= 0 && ctr2 < matrix[0].Length && timesRepeat != 0)
+            {
+                currWord += matrix[ctr--][ctr2++];
+                timesRepeat--;
+            }
+
+            if (currWord == word || currWord == new string(word.Reverse().ToArray())) count++;
+
+            //bottom left
+            currWord = "";
+            ctr = i;
+            ctr2 = j;
+            timesRepeat = 4;
+
+            while (ctr < matrix.Length && ctr2 >= 0 && timesRepeat != 0)
+            {
+                currWord += matrix[ctr++][ctr2--];
+                timesRepeat--;
+            }
+
+            if (currWord == word || currWord == new string(word.Reverse().ToArray())) count++;
+
+            //bottom right
+            currWord = "";
+            ctr = i;
+            ctr2 = j;
+            timesRepeat = 4;
+
+            while (ctr < matrix.Length && ctr2 < matrix[0].Length && timesRepeat != 0)
+            {
+                currWord += matrix[ctr++][ctr2++];
+                timesRepeat--;
+            }
+
+            if (currWord == word || currWord == new string(word.Reverse().ToArray()))
+            {
+                count++;
+            }
+
+            return count;
         }
-
-
     }
 }
